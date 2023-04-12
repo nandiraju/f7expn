@@ -7,7 +7,7 @@ var app = new Framework7({
     enable: false,
   },
   dialog: {
-    title: "Job & Seek",
+    title: "Experian",
   },
   view: {
     stackPages: true,
