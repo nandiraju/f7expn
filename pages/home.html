@@ -1,0 +1,67 @@
+<template>
+    <div class="page" data-name="home">
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a class="link panel-open">
+                        <ion-icon name="menu-outline" class="white-icon" size="large">
+                        </ion-icon>
+                    </a>
+                </div>
+                <div class="title">FAQ</div>
+                <div class="right">
+                    <ion-icon name="square-outline" style="opacity: 0;;margin-right: 10px;"></ion-icon>
+                </div>
+            </div>
+        </div>
+        <div class="page-content hide-navbar-on-scroll">
+
+
+            <!-- <div class="block-title display-flex flex-direction-row align-items-center">
+                <ion-icon name="help-outline" class="heading-icon"></ion-icon>&nbsp;&nbsp;Experian FAQ
+            </div> -->
+            <br>
+
+
+            <div class="block m10">
+                {{#each faq}}
+                <div class="block-title">
+                    {{question}}
+                </div>
+                <div class="shadow-card stats" style="padding: 20px;">
+                    {{answer}}
+                </div>
+                {{/each}}
+                <!-- When no interviews are created -->
+                {{#js_if "this.faq.length<=0"}} Frequently Asked Questions {{/js_if}} <br>
+                    <br>
+            </div>
+        </div>
+</template>
+
+<script>
+    return {
+        data: function () {
+            return {
+                today: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
+                faq: []
+            }
+        },
+        mounted() {
+            let self = this;
+            self.updateHomeData();
+            app.off('faq-data-loaded').on('faq-data-loaded', function (data) {
+                self.$setState({
+                    faq: FAQS
+                });
+            });
+
+        }, methods: {
+            updateHomeData: function () {
+
+
+            },
+        }
+    }
+</script>

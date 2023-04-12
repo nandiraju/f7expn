@@ -1,0 +1,74 @@
+<template>
+    <div class="page" data-name="home">
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a class="link panel-open">
+                        <ion-icon name="menu-outline" class="white-icon" size="large">
+                        </ion-icon>
+                    </a>
+                </div>
+                <div class="title">Contacts</div>
+                <div class="right">
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="block">
+                <H2 style="font-size:2em;">Welcome to Experian GIC</H2>
+                <div style="font-style: plain;font-size: 13px;color:gray;margin-top: -20px;">{{today}}</div>
+            </div>
+
+            <div class="block-title block-title-medium">Contacts</div>
+            <div class="block m10">
+                {{#each contacts}}
+                <div class="block-title" style="font-size:12px;">
+                    {{description}}
+                </div>
+                <div class="shadow-card stats" style="padding: 20px;">
+                    {{contact}}
+                    <br>
+                    <span style="color:salmon">{{email}}</span>
+                </div>
+                {{/each}}
+                <!-- When no interviews are created -->
+                {{#js_if "this.contacts.length<=0"}} Contacts {{/js_if}} <br>
+            </div>
+
+            <div class="block-title block-title-medium">Experian Address</div>
+            <div class="block card inset padding">
+                Experian Services India Pvt Ltd <br>
+                Global Innovation Center (GIC) <br>
+                4th & 5th floor, block 2, Cyber Pearl <br>
+                HITEC City, Madhapur, Hyderabad - 500081
+            </div>
+
+        </div>
+    </div>
+</template>
+
+<script>
+    return {
+        data: function () {
+            return {
+                contacts: [],
+                today: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
+
+            }
+        },
+        mounted() {
+            var self = this;
+            getContacts();
+            app.off('contacts-data-loaded').on("contacts-data-loaded", function (el) {
+                self.$setState({
+                    contacts: CONTACTS
+                });
+            });
+
+        }, methods: {
+            addNote: function (prompt_index) {
+            }
+        }
+    }
+</script>
