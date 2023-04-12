@@ -14,7 +14,7 @@ var app = new Framework7({
   },
   root: "#app", // App root element
   id: "com.nandiraju.jobseek", // App bundle ID
-  name: "Job & Seek", // App name
+  name: "Experian", // App name
   theme: "md", // Automatic theme detection
   routes: [
     {
