@@ -60,7 +60,7 @@
         mounted() {
             var self = this;
             getContacts();
-            app.off('contacts-data-loaded').on("contacts-data-loaded", function (el) {
+            app.on("contacts-data-loaded", function (el) {
                 self.$setState({
                     contacts: CONTACTS
                 });

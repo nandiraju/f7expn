@@ -51,7 +51,7 @@
         mounted() {
             let self = this;
             self.updateHomeData();
-            app.off('faq-data-loaded').on('faq-data-loaded', function (data) {
+            app.on('faq-data-loaded', function (data) {
                 self.$setState({
                     faq: FAQS
                 });
