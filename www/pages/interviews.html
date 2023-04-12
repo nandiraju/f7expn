@@ -1,0 +1,304 @@
+<template>
+    <div class="page" data-name="interviews">
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+
+                <div class="navbar-inner sliding">
+                    <div class="left">
+                        &nbsp;
+                        <a href="#" class="link back">
+                            <i class="icon icon-back"></i>
+                        </a>
+                    </div>
+                    <div class="title">interviews</div>
+                    <div style="padding-right: 15px;" class="link">
+                        <ion-icon name="search-outline" style="opacity: 0;" class="bigger-one"></ion-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fab fab-right-bottom">
+            <a href="#" id="create-interview-button">
+                <ion-icon name="add-outline" class="bigger-icon" style="color:white;">
+                </ion-icon>
+            </a>
+        </div>
+        <div class="page-content">
+            <div class="popup my-interview-popup">
+                <div class="page">
+                    <!-- <div class="page-content display-flex flex-direction-column justify-content-center"> -->
+                    <div class="page-content">
+                        <!-- <div class="block">
+                            <lottie-player src="img/lottie/meditation.json" background="transparent" speed=".6"
+                                style="width:40%;margin:auto;" loop autoplay></lottie-player>
+                        </div> -->
+                        <div class="block-title display-flex flex-direction-row align-items-center">
+                            <ion-icon name="create-outline" class="heading-icon"></ion-icon>&nbsp;&nbsp;Enter
+                            interview details
+                        </div>
+                        <form class="list form-list inset" id="item-form">
+
+                            <input type="hidden" name="id">
+                            <input type="hidden" name="created_at">
+
+                            <ul style="padding-bottom: 10px;">
+
+                                <li class="item-content item-input item-input-outline">
+                                    <div class="item-inner">
+                                        <div class="item-title item-floating-label">Title</div>
+                                        <div class="item-input-wrap">
+                                            <input type="text" name="title" placeholder="Title">
+                                            <span class="input-clear-button"></span>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="item-content item-input item-input-outline">
+                                    <div class="item-inner">
+                                        <div class="item-title item-floating-label">Company</div>
+                                        <div class="item-input-wrap">
+                                            <input type="text" name="company" placeholder="Title">
+                                            <span class="input-clear-button"></span>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="item-content item-input item-input-outline">
+                                    <div class="item-inner">
+                                        <div class="item-title item-floating-label">Date</div>
+                                        <div class="item-input-wrap">
+                                            <input type="text" name="interview_date" placeholder="Select Date and Time"
+                                                readonly="readonly" id="date-time">
+                                            <span class="input-clear-button"></span>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="item-content item-input item-input-outline">
+                                    <div class="item-inner">
+                                        <div class="item-title item-floating-label">Notes</div>
+                                        <div class="item-input-wrap">
+                                            <textarea name="description" placeholder="Enter notes here"></textarea>
+                                            <span class="input-clear-button"></span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </form>
+
+                        <div class="block">
+                            <div class="row" style="width:200px;margin:auto;">
+                                <button class="button col save-notes-button button-fill color-blue"
+                                    style="border-radius: 20px;">Save</button>
+                                <button class="button col popup-close button-fill color-gray"
+                                    style="border-radius: 20px;">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="block">
+                {{#each my_interviews}}
+                <div class="card" style="margin-bottom:20px;">
+                    <!-- <div class="card-header">{{name}}</div> -->
+                    <div class="card-header">
+                        <div class="chip chip-outline chip-tiny color-blue">
+                            <div class="chip-label chip-small">{{company}}</div>
+                        </div>
+                        <div>interview {{js "moment(this.interview_date).fromNow()"}}</div>
+                    </div>
+                    <div class="card-content" style="padding:0px 10px;">
+
+                        <div class="display-flex align-content-space-between flex-direction-row">
+                            <div class="notes-panel display-flex align-content-center align-items-center">
+                                <div>
+                                    <span class="titleT">{{title}}</span>
+                                    <br>
+                                    {{description}}
+                                </div>
+                            </div>
+                            <div class="date-panel display-flex  align-content-center align-items-center">
+                                <p class="dw text-align-center">
+                                    {{js "moment(this.interview_date).format('MMM').toUpperCase()"}}
+                                    <br>
+                                    <span class="bigT">{{js "moment(this.interview_date).format('DD')"}}</span>
+                                    <br>
+                                    {{js "moment(this.interview_date).format('ddd')"}}
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="display-flex" @click="editNote('{{id}}')">
+                            <ion-icon name="create-outline" class="card-icon save-item-button" style="color:orangered">
+                            </ion-icon>
+                        </div>
+
+                        <div class="display-flex" style="align-items: center;justify-content: center;">
+                            <ion-icon name="time-outline" class="card-icon"></ion-icon>
+                            &nbsp;{{js "moment(this.created_at).fromNow()"}}.
+                        </div>
+
+                        <div class="display-flex" @click="deleteMyNote('{{id}}')">
+                            <ion-icon name="trash-outline" class="card-icon save-item-button" style="color:red">
+                            </ion-icon>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+
+            {{#js_if "this.my_interviews.length<1"}} <div class="flexy" style="height:70vh;">
+                <div class="text-align-center">
+                    <div class="block inset m10">
+                        <lottie-player id="ani-player" src="img/lottie/empty_notes.json" background="transparent"
+                            speed="0.8" style="width:90%;margin:auto;" loop autoplay></lottie-player>
+                    </div>
+                    <h3 class="align-self-center">No interviews saved.<br> Press on the "+" button to create interviews.
+                    </h3>
+                </div>
+        </div>
+        {{/js_if}}
+
+    </div>
+    </div>
+</template>
+
+<script>
+    return {
+        data: function () {
+            return {
+                my_interviews: []
+            }
+        },
+        mounted() {
+            var self = this;
+            var my_interviews = DataStore.get("my_interviews");
+            self.$setState({
+                my_interviews: my_interviews
+            });
+
+            var popup = app.popup.create({
+                el: ".my-interview-popup"
+            });
+
+            $$("#create-interview-button").on("click", function (e) {
+                if (popup.opened) {
+                    popup.close();
+                }
+                // Reset form.
+                //app.form.fillFromData('#item-form', );
+                //popup.open();
+                var note = {
+                    id: "",
+                    title: "",
+                    description: "",
+                    company: "",
+                };
+                app.emit("show-interview-popup", {
+                    note
+                });
+            });
+
+
+            app.off('show-interview-popup').on('show-interview-popup', function (data) {
+                if (data && data.note) {
+                    app.form.fillFromData('#item-form', data.note);
+                }
+                popup.open();
+            });
+
+            app.off('render-my-notes').on("render-my-notes", function (el) {
+                my_interviews = DataStore.get("my_interviews");
+                my_interviews.sort(function (a, b) {
+                    return new Date(a.interview_date) - new Date(b.interview_date);
+                });
+                self.$setState({
+                    my_interviews: my_interviews
+                });
+                popup.close();
+            });
+
+
+            $$(".row").on('click', '.save-notes-button', function () {
+                //$$(".save-notes-button").on("click", function (e) {
+                var one_note = app.form.convertToData('#item-form');
+
+                if (!one_note.title) {
+                    self.$app.dialog.alert('Please enter a title');
+                    return;
+                }
+                if (!one_note.description) {
+                    self.$app.dialog.alert('Write few lines into your notes');
+                    return;
+                }
+
+                // Update notes logic. Remove existing and add again with same note_id.
+                my_interviews = DataStore.get("my_interviews");
+                if (one_note.id) { // existing note
+                    my_interviews = my_interviews.filter(function (oneNote) {
+                        return oneNote.id != one_note.id;
+                    });
+                    one_note.updated_at = moment();
+                } else {
+                    one_note.id = DataStore.uuid();
+                    one_note.created_at = moment();
+                }
+
+                // Convert string to date.
+
+                one_note.interview_date = moment(one_note.interview_date, 'MM/DD/YYYY, hh:mm A');
+                // debug(one_note);
+                //my_interviews.push(one_note);
+                let c_notes = [one_note, ...my_interviews];
+                DataStore.set("my_interviews", c_notes);
+                app.emit("render-my-notes");
+                // let emotionUI = "#neutral";
+                // $$(emotionUI).addClass("button-active");
+                app.emit("update-dashboard", { payload: my_interviews });
+            });
+
+
+            var calendarDateTime = app.calendar.create({
+                inputEl: '#date-time',
+                timePicker: true,
+                openIn: 'popup',
+                dateFormat: 'mm/dd/yyyy, hh:mm A',
+            });
+
+
+        },
+        methods: {
+            editNote: function (note_id) {
+                let self = this;
+                let my_interviews = DataStore.get("my_interviews");
+                let found_note = my_interviews.find(function (oneNote) {
+                    return oneNote.id == note_id;
+                });
+                found_note.interview_date = moment(found_note.interview_date).format('MM/DD/YYYY, hh:mm A');
+                app.form.fillFromData('#item-form', found_note);
+                app.emit("show-interview-popup");
+            },
+            deleteMyNote: function (note_id) {
+                let self = this;
+                let my_interviews = DataStore.get("my_interviews");
+                my_interviews = my_interviews.filter(function (oneNote) {
+                    return oneNote.id != note_id;
+                });
+                self.$setState({
+                    my_interviews: my_interviews,
+                });
+                DataStore.set("my_interviews", my_interviews);
+                showToast("Removed successfully", "center");
+                app.emit("update-dashboard", { payload: my_interviews });
+            }
+        },
+
+
+    }
+</script>

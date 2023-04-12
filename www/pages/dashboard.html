@@ -1,0 +1,184 @@
+<template>
+    <div class="page" data-name="dashboard">
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                        <span class="ios-only">Back</span>
+                    </a>
+                </div>
+                <div class="title">Dashboard</div>
+                <div class="right">
+                    <ion-icon name="square-outline" style="opacity: 0;;margin-right: 10px;"></ion-icon>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <br>
+            <div class="block inset m10">
+                <lottie-player id="ani-player" src="https://assets4.lottiefiles.com/packages/lf20_acryqbdv.json"
+                    background="transparent" speed="1" style="width:80%;margin:auto;" loop autoplay></lottie-player>
+            </div>
+            <div class="block m10">
+                Job&Seek captures user data to provide valuable interview insights. The app analyzes key metrics, such
+                as interview
+                performance, strengths and weaknesses, and trend analysis to help users improve their interview skills.
+                <br><br>
+                Job&Seek also
+                provides personalized feedback using machine learning and natural language processing. The app is a
+                valuable tool for
+                job seekers looking to target their job search more effectively and land their dream job.
+            </div>
+
+
+            <!-- <div class="block-title display-flex flex-direction-row align-items-center ">
+                <ion-icon name="albums-outline" class="heading-icon"></ion-icon>&nbsp;&nbsp;Prompts Summary
+            </div>
+            <div class="block m10">
+                <div class="row">
+                    <div class="col-50">
+                        <div style="background-color: teal;"
+                            class="dash-card stats flex-direction-column display-flex justify-content-center align-items-center shadow-card text-align-center">
+                            Guided Prompts
+                            <ion-icon name="umbrella" class="dash-icon">
+                            </ion-icon>
+                            <span class="big-stat">200</span>
+                        </div>
+                    </div>
+                    <div class="col-50">
+                        <div style="background-color: hotpink;"
+                            class="dash-card stats flex-direction-column display-flex justify-content-center align-items-center shadow-card text-align-center">
+                            Custom Prompts
+                            <ion-icon name="umbrella-outline" class="dash-icon">
+                            </ion-icon>
+                            <span class="big-stat">{{dashboard.custom_prompts}}</span>
+                        </div>
+                    </div>
+                    <div class="col-100">
+                        <div style="background-color: Lightcoral;border-radius:8px;padding:0px;"
+                            class="dash-card s1 stats flex-direction-row display-flex  align-items-center text-align-center">
+                            <p class="big-stat" style="padding-left:20px;">{{dashboard.instant_prompts}}
+                            </p>
+                            <p style="padding:0px 20px;text-align:left;">
+                                <strong>Instant Prompts</strong>
+                                <br>
+                                These are impromptu prompts that have been entered while creating journal entry.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="block-title display-flex flex-direction-row align-items-center ">
+                <ion-icon name="happy-outline" class="heading-icon"></ion-icon>&nbsp;&nbsp;Interview Dashboard
+            </div>
+            <div class="block m10">
+                <div class="row">
+                    <div class="col-33">
+                        <div style="background-color: orangered;color:white;"
+                            class="stats flex-direction-column display-flex justify-content-center align-items-center shadow-card text-align-center">
+                            <ion-icon name="sad" style="font-size:3rem;margin:auto;color:white;margin-top: 10px;">
+                            </ion-icon>
+                            <span class="big-stat">{{dashboard.emotion_negative}}</span>
+                            Good <br> Interviews
+                        </div>
+                    </div>
+                    <div class="col-33">
+                        <div style="background-color: darksalmon;color:white;"
+                            class="stats flex-direction-column display-flex justify-content-center align-items-center shadow-card text-align-center">
+                            <ion-icon name="remove-circle"
+                                style="font-size:3rem;margin:auto;color:white;margin-top: 10px;">
+                            </ion-icon>
+                            <span class="big-stat">{{dashboard.emotion_neutral}}</span>
+                            Neutral <br> Feeling
+                        </div>
+                    </div>
+                    <div class="col-33">
+                        <div style="background-color: green;color:white;"
+                            class="stats flex-direction-column display-flex justify-content-center align-items-center shadow-card text-align-center">
+                            <ion-icon name="happy" style="font-size:3rem;margin:auto;color:white;margin-top: 10px;">
+                            </ion-icon>
+                            <span class="big-stat">{{dashboard.emotion_positive}}</span>
+                            Bad <br> Interviews
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+        </div>
+    </div>
+</template>
+
+<script>
+    return {
+        data: function () {
+            return {
+                dashboard: DASHBOARD,
+            }
+        },
+        mounted() {
+            var self = this;
+            let my_custom_prompts = DataStore.get("my_custom_prompts");
+            let notes = DataStore.get("my_notes");
+            DASHBOARD = {
+                prompts: 200 + my_custom_prompts.length,
+                entries: notes.length,
+                days: notes.length,
+                emotion_negative: 0,
+                emotion_neutral: 0,
+                emotion_positive: 0,
+                custom_prompts: my_custom_prompts.length,
+                instant_prompts: 0,
+                prompt_id_: 0
+            };
+            // Run DASHBOARD using attributes.
+            for (let index = 0; index < notes.length; index++) {
+                let oneElement = notes[index];
+                for (const key in oneElement) {
+                    if (oneElement.hasOwnProperty(key)) {
+                        let element = oneElement[key];
+
+                        if (key === "created_at") { // Handle dates specifically
+                            // Capture monthly entries
+                            let monthName = moment(oneElement[key]).format("MM");
+                            monthName = "month_" + monthName;
+                            if (DASHBOARD[monthName]) {
+                                DASHBOARD[monthName] += 1;
+                            } else {
+                                DASHBOARD[monthName] = 1;
+                            }
+                            // Capture weekday entries
+                            let dayName = moment(oneElement[key]).format("dddd");
+                            dayName = "weekday_" + dayName;
+                            if (DASHBOARD[dayName]) {
+                                DASHBOARD[dayName] += 1;
+                            } else {
+                                DASHBOARD[dayName] = 1;
+                            }
+                        } else if (key != "created_date" && key != "updated_at" && key != "description" && key != "name" && key != "note_id") { // Handle all other attributes.
+                            element = key + "_" + element;
+                            if (DASHBOARD[element]) {
+                                DASHBOARD[element] += 1;
+                            } else {
+                                DASHBOARD[element] = 1;
+                            }
+                        }
+                    }
+                }
+            }
+            // Instant promps dont have ids so remapping it to instant prompts
+            DASHBOARD.instant_prompts = DASHBOARD['prompt_id_'];
+
+            this.$setState({
+                dashboard: DASHBOARD
+            });
+        }
+    }
+</script>
