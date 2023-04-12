@@ -94,11 +94,11 @@ var API_URL =
 let FAQS = undefined;
 let CONTACTS = undefined;
 function getFAQ() {
-  if (FAQS) {
-    app.emit("faq-data-loaded");
-    debug("Returning data already there");
-    return;
-  }
+  // if (FAQS) {
+  //   app.emit("faq-data-loaded");
+  //   debug("Returning data already there");
+  //   return;
+  // }
 
   fetch(API_URL + "faq", {
     method: "GET",
@@ -113,14 +113,14 @@ function getFAQ() {
       app.emit("faq-data-loaded");
     });
 }
-getFAQ();
+// getFAQ();
 
 function getContacts() {
-  if (CONTACTS) {
-    app.emit("contacts-data-loaded");
-    debug("Returning data already there");
-    return;
-  }
+  // if (CONTACTS) {
+  //   app.emit("contacts-data-loaded");
+  //   debug("Returning data already there");
+  //   return;
+  // }
 
   fetch(API_URL + "contacts", {
     method: "GET",

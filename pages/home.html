@@ -51,6 +51,7 @@
         mounted() {
             let self = this;
             self.updateHomeData();
+            getFAQ();
             app.on('faq-data-loaded', function (data) {
                 self.$setState({
                     faq: FAQS
@@ -59,8 +60,6 @@
 
         }, methods: {
             updateHomeData: function () {
-
-
             },
         }
     }
